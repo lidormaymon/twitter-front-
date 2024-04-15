@@ -1,0 +1,63 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* * {
+  outline: 1px solid red !important;
+} */
+
+body {
+  overflow-x: hidden;
+  background-color: black;
+  color:white;
+}
+
+
+textarea {
+  resize: none;
+}
+
+.my-container {
+  @apply relative sm:border-l border-gray-600 sm:border-r sm:border-gray-600 flex flex-col min-h-screen h-fit w-screen sm:w-105 3xl:w-108
+}
+
+.message-container {
+  @apply relative sm:border-l border-gray-600 sm:border-r sm:border-gray-600 flex flex-col min-h-screen h-fit w-screen sm:w-109 xl:w-120 3xl:w-145
+}
+
+.links {
+  @apply  flex  text-2xl relative right-5 p-2 pl-4 bottom-3 hover:font-semibold w-auto text-center h-12 cursor-pointer
+  hover:transition-colors  hover:duration-500 hover:ease-in-out hover:bg-gray-700 hover:rounded-full
+}
+
+.burger-links {
+  @apply font-serif  relative left-2 text-base
+}
+
+.input {
+  @apply border-b-1 border-black border-collapse outline-none bg-black
+}
+
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px; /* Adjust the width as needed */
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: transparent; /* Color of the scrollbar thumb */
+  border-radius: 4px; /* Adjust the border-radius as needed */
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: #555; /* Color of the scrollbar thumb on hover */
+}
+
+/* Only show the scrollbar when scrolling */
+.custom-scrollbar:hover::-webkit-scrollbar-thumb {
+  background-color: #888; /* Color of the scrollbar thumb */
+}
+
