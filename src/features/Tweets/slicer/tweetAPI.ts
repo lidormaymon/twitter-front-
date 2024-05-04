@@ -23,7 +23,7 @@ export const nextPageProfileTweetsAPI = (page: number, user_id: number) => {
 }
 
 export const fetchTweet = (tweet_id: number) => {
-    return axios.get(API_SERVER + 'tweets/' + tweet_id)
+    return axios.get(API_SERVER + `tweets/${tweet_id}/`)
 }
 
 export const fetchTweetsPage = () => {
@@ -59,7 +59,7 @@ export const nextPageProfileLikedTweetsAPI = (page: number, profile_id: number) 
 }
 
 export const deleteTweetAPI = (tweet_id: number) => {
-    return axios.delete(API_SERVER + `tweets/${tweet_id}`)
+    return axios.delete(API_SERVER + `tweets/${tweet_id}/`)
 }
 
 export const editTweetAPI = (tweet_id: number, text: string) => {
@@ -95,7 +95,7 @@ export const queryLikes = (user_id: number | null, tweet_id: number) => {
 
 export const removeLike = (like_id: number, tweet_id: number, likes: number) => {
     const likesData = { likes: likes - 1 }
-    const deleteLikeRequest = axios.delete(API_SERVER + `tweet-like/${like_id}`)
+    const deleteLikeRequest = axios.delete(API_SERVER + `tweet-like/${like_id}/`)
     const decremenetLikesRequest = axios.put(API_SERVER + `tweets/${tweet_id}/`, likesData)
     return axios.all([deleteLikeRequest, decremenetLikesRequest])
         .then(axios.spread((deleteResponse, decremenetLikesResponse) => {

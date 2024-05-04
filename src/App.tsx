@@ -17,7 +17,7 @@ import MessageChats from "./features/messages/MessageChats";
 import EditProfile from "./features/profile/EditProfile";
 import { Error404 } from "./features/componets/Error404";
 import Loader from "./features/componets/Loader";
-import { ChangePWD } from "./features/auth/ChangePWD";
+import { ChangePWD } from "./features/auth/ChangePWD";  
 import EmailVerify from "./features/auth/EmailVerify";
 import VerifyAccount from "./features/auth/VerifyAccount";
 

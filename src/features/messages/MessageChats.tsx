@@ -33,7 +33,7 @@ const MessageChats = () => {
   const tokenString = localStorage.getItem('token')
   const token = tokenString ? JSON.parse(tokenString) : null
   const [conversation_id, setConversation_id] = useState(0)
-  const chatSocket = new WebSocket(`ws://localhost:8000/ws/chat/${conversation_id}/`)
+  const chatSocket = new WebSocket(`ws://localhost:8000/ws/chat/${conversation_id}/`);
   const hiddenFileInput = useRef<HTMLInputElement | null>(null)
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
   const chatContainerRef = useRef<HTMLDivElement | null>(null)
