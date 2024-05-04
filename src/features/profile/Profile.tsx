@@ -21,6 +21,7 @@ import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import { Error404 } from "../componets/Error404"
 import CloseIcon from '@mui/icons-material/Close';
 import OpenImage from "../componets/OpenImage"
+import Loader from "../componets/Loader"
 
 const Profile = () => {
     const { username } = useParams<{ username: string }>()
@@ -41,6 +42,7 @@ const Profile = () => {
     const dispatch = useAppDispatch()
     const followersAR = useAppSelector(selectFollowers)
     const [hovered, setHovered] = useState(false);
+    const [isLoading, setIsLoading] = useState(false)
 
 
     const handleHover = () => {
@@ -74,12 +76,23 @@ const Profile = () => {
         console.log(isUserFollowing);
     }
 
+    const asyncGetUsers = async () => {
+        setIsLoading(true)
+        try {
+            await dispatch(getUsers())
+        } catch (error) {
+
+        } finally {
+            setIsLoading(false)
+        }
+    }
+
 
     useEffect(() => {
         if (verifiedRequestFlag) {
             setVerifiedRequestFlag(false)
         }
-        dispatch(getUsers())
+        asyncGetUsers()
         profile_id === 1 && navigate('/')
     }, [profile_id, verifiedRequestFlag])
 
@@ -95,6 +108,10 @@ const Profile = () => {
         }
     }, [BrowsingUser.is_logged, profile_id, BrowsingUser.id, isUserFollowing, followFlag, followersData.followers, followersData.following])
 
+
+    if (isLoading) {
+        return <div className="self-center relative top-48"><Loader isTextLoading={true} /></div>
+    }
     if (profileCreds === undefined) {
         return <Error404 />
     }
@@ -188,8 +205,8 @@ const Profile = () => {
                         <p className={`w-1/2 hover:bg-gray-700 p-2 cursor-pointer ${activeTab === 'likes' && 'text-white'}`} onClick={() => setActiveTab('likes')}>Likes</p>
                     </div>
                     <div className="relative top-5 ">
-                        {activeTab === 'posts' ? (<ProfilePosts profile_id={profile_id || 0} />) 
-                        : activeTab ==='likes' && <ProfileLikes profile_id={profile_id || 0} /> }
+                        {activeTab === 'posts' ? (<ProfilePosts profile_id={profile_id || 0} />)
+                            : activeTab === 'likes' && <ProfileLikes profile_id={profile_id || 0} />}
                     </div>
                 </div>
             </div>

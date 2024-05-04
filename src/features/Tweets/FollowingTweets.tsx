@@ -19,6 +19,7 @@ const FollowingTweets = () => {
   const [currentPage, setCurrentPage] = useState(1)
   const [newComment, setNewComment] = useState(false)
   const [isNextPage, setNextPage] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
   const loadMoreTweets = () => {
     console.log(BrowsingUserID);
 
@@ -26,12 +27,22 @@ const FollowingTweets = () => {
     setNextPage(true)
   };
 
+  const fetchTweets = async () => {
+    setIsLoading(true)
+    try {
+      if (tokenString) {
+        const token = JSON.parse(tokenString)
+        await dispatch(fetchFollowingTweetsAsync({ user_id: BrowsingUser.id, token }))
+      }
+    } catch (error) {
+      console.log('Error has been occured!', error);
+    } finally { 
+      setIsLoading(false)
+    }
+  }
 
   useEffect(() => {
-    if (tokenString) {
-      const token = JSON.parse(tokenString)
-      dispatch(fetchFollowingTweetsAsync({ user_id: BrowsingUser.id, token }))
-    }
+    fetchTweets()
     dispatch(getUsers())
     newTweet && setNewComment(false)
     newComment && setNewComment(false)
@@ -50,8 +61,8 @@ const FollowingTweets = () => {
     fetchData()
   }, [isNextPage, currentPage])
 
-  if (tweets === undefined) {
-    return <div><Loader isTextLoading={true} /></div>
+  if (isLoading) {
+    return <div className="relative left-69 top-20"><Loader isTextLoading={true} /></div>
   }
 
   return (

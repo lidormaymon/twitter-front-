@@ -42,6 +42,7 @@ const TweetPage = () => {
   const [editText, seteditText] = useState(tweetData?.text || '')
   const [sumbitEdited, setSumbitEdited] = useState(false)
   const BrowsingUserID = BrowsingUser.id
+  const [isLoading, setIsLoading] = useState(true)
   const parsedDate = parseISO(tweetData?.created_time || '')
   const [newComment, setnewComment] = useState(false)
   const formattedDate =
@@ -111,8 +112,20 @@ const TweetPage = () => {
     document.body.classList.add('overflow-hidden')
   }
 
+  const fetchTweet = async () => {
+    setIsLoading(true)
+    try {
+      dispatch(getTweet(tweet_id))
+    } catch (error) {
+      console.log('Error has been occured', error);
+      
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
   useEffect(() => {
-    dispatch(getTweet(tweet_id))
+    fetchTweet()
     console.log(tweets);
     
     dispatch(getPageComments(tweet_id))
@@ -136,7 +149,7 @@ const TweetPage = () => {
     }
   }, [tweet_id, BrowsingUser.is_logged, likedByMe, BrowsingUserID])
 
-  if (tweetData === undefined || tweet_comments === undefined) {
+  if (isLoading) {
     return <div className="relative left-44 top-44 sm:left-72"><Loader isTextLoading={true} /></div>; // Render a loading indicator
   }
 

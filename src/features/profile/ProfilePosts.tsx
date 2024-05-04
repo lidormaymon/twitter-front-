@@ -4,6 +4,7 @@ import { useAppDispatch, useAppSelector } from '../../app/hooks'
 import { fetchProfileTweetsAsync, nextPageProfileTweetsAsync, selectTweets  } from '../Tweets/slicer/tweetSlice'
 import { getUsers } from '../auth/Slicer/authSlice'
 import Button from '../componets/Button'
+import Loader from '../componets/Loader'
 
 interface profilePostProps {
   profile_id: number
@@ -17,6 +18,7 @@ export const ProfilePosts: React.FC<profilePostProps> = ({ profile_id }) => {
   const [sumbitEdited, setSumbitEdited] = useState(false)
   const [isLoading, setisLoading] = useState(false)
   const [newComment, setNewComment] = useState(false)
+  const [isLoadingTweets, setIsLoadingTweets] = useState(false)
 
   
   const loadMoreTweets = () => {
@@ -31,8 +33,19 @@ export const ProfilePosts: React.FC<profilePostProps> = ({ profile_id }) => {
     }
   };
 
+  const fetchProfileTweets = async () => {
+    setIsLoadingTweets(true)
+    try {
+      await dispatch(fetchProfileTweetsAsync(profile_id))
+    } catch (error) {
+      
+    } finally {
+      setIsLoadingTweets(false)
+    }
+  }
+
   useEffect(() => {
-    dispatch(fetchProfileTweetsAsync(profile_id))
+    fetchProfileTweets()
     dispatch(getUsers())
     if (sumbitEdited) {
       setSumbitEdited(false)
@@ -47,6 +60,11 @@ export const ProfilePosts: React.FC<profilePostProps> = ({ profile_id }) => {
       setNextPage(false)
     }
   }, [isNextPage, currentPage, profile_id])
+
+
+  if (isLoadingTweets) {
+    return <div className='relative left-68 top-5'><Loader isTextLoading={true} /></div>
+  }
 
   return (
     <div>

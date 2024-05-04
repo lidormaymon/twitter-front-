@@ -32,14 +32,25 @@ const RecentTweets = () => {
     }
   }
 
+  const fetchTweets = async () => {
+    setIsLoading(true)
+    try {
+      await dispatch(getTweetsPage())
+      await dispatch(getUsers())
+    } catch (error) {
+      console.log('Error has been occured!', error);
+    } finally { 
+      setIsLoading(false)
+    }
+  }
+
 
   useEffect(() => {
-    dispatch(getTweetsPage())
-    dispatch(getUsers())
+    fetchTweets()
     newTweet && dispatch(setNewTweetFalse())
     sumbitEdited && setSumbitEdited(false)
     newComment && setNewComment(false)
-  }, [newTweet, sumbitEdited, isLoading, newComment])
+  }, [newTweet, sumbitEdited, newComment])
 
   useEffect(() => {
     const fetchData = async () => {
@@ -55,7 +66,7 @@ const RecentTweets = () => {
   }, [isNextPage, currentPage])
 
   if (isLoading) {
-    return <div className="relative left-44 sm:left-80 top-20 sm:top-28 w-10"><Loader isTextLoading={true} /></div>
+    return <div className="relative left-44 sm:left-69 top-20 sm:top-28 w-10"><Loader isTextLoading={true} /></div>
   }
 
   return (
