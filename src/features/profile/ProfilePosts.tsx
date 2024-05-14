@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import TweetForm from '../Tweets/componets/TweetForm'
 import { useAppDispatch, useAppSelector } from '../../app/hooks'
 import { fetchProfileTweetsAsync, nextPageProfileTweetsAsync, selectTweets  } from '../Tweets/slicer/tweetSlice'
-import { getUsers } from '../auth/Slicer/authSlice'
+import { getUsers, selectUsers } from '../auth/Slicer/authSlice'
 import Button from '../componets/Button'
 import Loader from '../componets/Loader'
 
@@ -13,6 +13,8 @@ interface profilePostProps {
 export const ProfilePosts: React.FC<profilePostProps> = ({ profile_id }) => {
   const dispatch = useAppDispatch()
   const profileTweets = useAppSelector(selectTweets)
+  const users = useAppSelector(selectUsers)
+  const profileCreds = users.find((user: any) => user.id === profile_id )
   const [currentPage, setCurrentPage] = useState(1)
   const [isNextPage, setNextPage] = useState(false)
   const [sumbitEdited, setSumbitEdited] = useState(false)
@@ -94,7 +96,7 @@ export const ProfilePosts: React.FC<profilePostProps> = ({ profile_id }) => {
         </>
       ) : (
         <div className="relative sm:bottom-5 sm:h-105 sm:border-b 3xl:h-120 sm:border-gray-600">
-          <p className="mx-4 relative top-3 text-center">No tweets have been posted yet.</p>
+          <p className="mx-4 relative top-3 text-center">No tweets have been posted by {profileCreds?.username} yet.</p>
         </div>
       )}
     </div>

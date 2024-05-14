@@ -27,6 +27,7 @@ export const PostTweet: React.FC<props> = ({underline, setPostTweetFlag }) => {
     const hiddenFileInput = useRef<HTMLInputElement | null>(null)
     const [selectedFile, setSelectedFile] = useState<File | null>(null)
     const navigate = useNavigate()
+    const modalRef = useRef<HTMLDivElement>(null)
   
     const handleTextInput = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
       setTweetText(event.target.value);
@@ -91,8 +92,15 @@ export const PostTweet: React.FC<props> = ({underline, setPostTweetFlag }) => {
     }, [])
   
     useEffect(() => {
-  
-    }, [selectedFile])
+      const handleClickOutside = (event: MouseEvent) => {
+        if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
+          setEmojiMode(false)
+        }
+      }
+
+      document.addEventListener('mousedown', handleClickOutside)
+
+    }, [])
   return (
     <div className={`relative top-2 ${underline && 'border-b-2 border-gray-600'}  h-44`}>
     <div className="relative bottom-4">
@@ -144,7 +152,7 @@ export const PostTweet: React.FC<props> = ({underline, setPostTweetFlag }) => {
 
       <div className="relative top-96">
         {emojiMode && (
-          <div className="absolute bottom-0 right-0 z-10">
+          <div ref={modalRef} className="absolute bottom-0 right-0 z-10">
             <EmojiPicker
               width={300}
               height={350}

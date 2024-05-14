@@ -2,10 +2,11 @@ import React, { useEffect, useRef, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../app/hooks'
 import { editUserAsync, getUsers, selectUserData, selectUsers } from '../auth/Slicer/authSlice'
-import ProfileHeader from './componets/ProfileHeader'
 import Button from '../componets/Button'
 import ProfilePic from './componets/ProfilePic'
 import BackButton from '../componets/BackButton'
+import SentimentSatisfiedAltIcon from '@mui/icons-material/SentimentSatisfiedAlt';
+import EmojiPicker from 'emoji-picker-react';
 
 
 const EditProfile = () => {
@@ -14,6 +15,7 @@ const EditProfile = () => {
   const navigate = useNavigate()
   const [profile_pic, setprofile_pic] = useState('')
   const BrowsingUser = useAppSelector(selectUserData)
+  const [emojiMode, setEmojiMode] = useState(false)
   const users = useAppSelector(selectUsers)
   const BrowsingUserCreds = users.find((user) => user.id === BrowsingUser.id)
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -21,6 +23,7 @@ const EditProfile = () => {
   const [bioInput, setBioInput] = useState('')
   const hiddenFileInput = useRef<HTMLInputElement | null>(null)
   const [nameError, setNameError] = useState(false)
+  const modalRef = useRef<HTMLDivElement>(null)
 
 
   const handleNameInput = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -76,11 +79,19 @@ const EditProfile = () => {
         }
       } catch (error) {
         console.log(error);
-        
-      }finally {
+
+      } finally {
         setisLoadingEdit(false)
       }
     } else setNameError(true)
+  }
+
+  const toggleEmojis = () => {
+    emojiMode ? setEmojiMode(false) : setEmojiMode(true)
+  }
+
+  const handleEmojiClick = (emoji: any) => {
+    setBioInput((prevText) => prevText + emoji);
   }
 
 
@@ -94,6 +105,19 @@ const EditProfile = () => {
       navigate('/')
     }
   }, [])
+
+  useEffect(() => {
+    const handleClickOutside = ( event: MouseEvent) => {
+      if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
+        setEmojiMode(false)
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+
+
+  }, [])
+  
 
 
 
@@ -174,6 +198,22 @@ const EditProfile = () => {
                 onChange={handleBioInput}
                 onKeyDown={handleBioKeyPress}
               />
+              <SentimentSatisfiedAltIcon
+                onClick={() => toggleEmojis()}
+                className='relative right-8 bottom-3 hover:text-gray-200 cursor-pointer'
+              />
+            </div>
+            <div>
+              {emojiMode && (
+                <div ref={modalRef} className="absolute bottom-0 right-0 z-10">
+                  <EmojiPicker
+                    width={300}
+                    height={350}
+                    onEmojiClick={(emojiObject) => handleEmojiClick(emojiObject.emoji)}
+
+                  />
+                </div>
+              )}
             </div>
           </div>
         </div>

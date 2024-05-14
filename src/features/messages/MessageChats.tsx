@@ -27,7 +27,7 @@ const MessageChats = () => {
   const [isLoading, setIsLoading] = useState(true)
   const users = useAppSelector(selectUsers)
   const recipientCreds = users.find((user) => user.username === username)
-  const RecipientUserID = recipientCreds?.id  
+  const RecipientUserID = recipientCreds?.id
   const [inputText, setInputText] = useState('')
   const historyMessages = useAppSelector(selectMessages)
   const tokenString = localStorage.getItem('token')
@@ -82,39 +82,33 @@ const MessageChats = () => {
   const postMessage = async () => {
     setEmojiMode(false)
     if (selectedFile !== null || inputText.trim() !== "") {
-      if (chatSocket.readyState === WebSocket.OPEN) {
-        if (selectedFile === null) {
-          const data = { BrowsingUserID, RecipientUserID, inputText, token }
-          const response = await dispatch(postCoverstaionMessageAsync(data))
-          console.log(response);
-          if (response.type === 'post/message/fulfilled') {
-            const text = inputText
-            const sender_id = BrowsingUserID
-            const conversation_id = response.payload.conversation_id
-            const recipient_id = RecipientUserID
-            const timestamp = new Date().toISOString()
-            chatSocket.send(JSON.stringify({ text, sender_id, conversation_id, timestamp, recipient_id, image:null }))
-          }
-        } else {
-          const data = { BrowsingUserID, RecipientUserID, inputText, token, image: selectedFile }
-          const response = await dispatch(postCoverstaionMessageAsync(data))
-          console.log(response);
-          if (response.type === 'post/message/fulfilled') {
-            const text = inputText
-            const sender_id = BrowsingUserID
-            const conversation_id = response.payload.conversation_id
-            const recipient_id = RecipientUserID
-            const timestamp = new Date().toISOString();
-            const image = response.payload.image
-            chatSocket.send(JSON.stringify({ text, sender_id, conversation_id, timestamp, recipient_id, image: image }))
-          }
+      if (selectedFile === null) {
+        const data = { BrowsingUserID, RecipientUserID, inputText, token }
+        const response = await dispatch(postCoverstaionMessageAsync(data))
+        console.log(response);
+        if (response.type === 'post/message/fulfilled') {
+          const text = inputText
+          const sender_id = BrowsingUserID
+          const conversation_id = response.payload.conversation_id
+          const recipient_id = RecipientUserID
+          const timestamp = new Date().toISOString()
+          chatSocket.send(JSON.stringify({ text, sender_id, conversation_id, timestamp, recipient_id, image: null }))
         }
       } else {
-        // in case socket hasnt been connected
-        console.log('blabla');
-        
-        toast.error('An error has occured, please try again.')
+        const data = { BrowsingUserID, RecipientUserID, inputText, token, image: selectedFile }
+        const response = await dispatch(postCoverstaionMessageAsync(data))
+        console.log(response);
+        if (response.type === 'post/message/fulfilled') {
+          const text = inputText
+          const sender_id = BrowsingUserID
+          const conversation_id = response.payload.conversation_id
+          const recipient_id = RecipientUserID
+          const timestamp = new Date().toISOString();
+          const image = response.payload.image
+          chatSocket.send(JSON.stringify({ text, sender_id, conversation_id, timestamp, recipient_id, image: image }))
+        }
       }
+
     }
     setSelectedFile(null)
     setInputText('')
@@ -209,7 +203,7 @@ const MessageChats = () => {
   }, [isNextPage, currentPage])
 
 
-  if (isLoading ) {
+  if (isLoading) {
     return <div className='relative left-50 sm:left-80 top-38 w-20 h-screen'><Loader isTextLoading={true} /></div>
   }
 
@@ -223,7 +217,7 @@ const MessageChats = () => {
         {location.pathname.startsWith('/messages/') && (
           <div className='px-4 py-3 flex flex-col w-95 sm:w-full'> {/* i want to make here only when socke is oconnect o display all of it */}
             <div className='flex flex-row'>
-              <OpenImage isProfile={true} image={recipientCreds?.profile_image || ''} width='45px'  />
+              <OpenImage isProfile={true} image={recipientCreds?.profile_image || ''} width='45px' />
               <Link to={`/profile/${recipientCreds?.username}`}>
                 <p className='mx-3 text-lg font-bold hover:underline'>{recipientCreds?.display_name}</p>
               </Link>

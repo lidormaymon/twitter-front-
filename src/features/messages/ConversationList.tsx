@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useAppDispatch, useAppSelector } from '../../app/hooks'
 import { getUsers, selectUserData, selectUsers } from '../auth/Slicer/authSlice'
 import { fetchUserConversationsAsync, selectConverstaionsAR, updateConversation } from './slicer/chatsSlicer'
@@ -6,6 +6,7 @@ import ProfilePic from '../profile/componets/ProfilePic'
 import { Link } from 'react-router-dom'
 import { formatDistanceToNow, parseISO } from 'date-fns';
 import ImageIcon from '@mui/icons-material/Image';
+import Loader from '../componets/Loader'
 
 
 interface ConversationListFormsProps {
@@ -102,7 +103,7 @@ export const ConversationList: React.FC<ConversationListProps> = ({ conversation
   const BrowsingUserID = BrowsingUser.id
   const tokenString = localStorage.getItem('token')
   const conversations = useAppSelector(selectConverstaionsAR)
-
+  const [isLoading, setIsLoading] = useState(false)
 
 
   useEffect(() => {
@@ -130,24 +131,37 @@ export const ConversationList: React.FC<ConversationListProps> = ({ conversation
     };
   }, [conversation_id, dispatch]);
 
-  useEffect(() => {
-    if (tokenString) {
-      const token = JSON.parse(tokenString)
-      dispatch(fetchUserConversationsAsync({ BrowsingUserID, token }))
+
+  const fetchConversationsAsync = async () => {
+    setIsLoading(true)
+    try {
+      if (tokenString) {
+        const token = JSON.parse(tokenString)
+        await dispatch(fetchUserConversationsAsync({ BrowsingUserID, token }))
+      }
+    } catch (error) {
+      console.log('Error has been occured!', error);
+    } finally {
+      setIsLoading(false)
     }
+  }
+
+
+  useEffect(() => {
+    fetchConversationsAsync()
   }, [BrowsingUserID])
 
-  useEffect(() => {
 
-    console.log(conversations)
-  }, [conversations])
+  if (isLoading) {
+    return <div className='relative left-20 top-20'><Loader isTextLoading={true} /></div>
+  }
 
 
 
   return (
     <div className={`${location.pathname === '/messages' ? `flex border-none sm:border-solid` : 'hidden'} xl:flex flex-row border-r  border-gray-600 sm:min-h-screen h-fit w-69 3xl:w-70`}>
       <div>
-        <h1 className="px-5 py-5 text-2xl font-bold font-serif">Messages</h1>
+        <h1 className="px-5 py-5 text-2xl font-bold font-serif">Inbox</h1>
         <div className='py-3'>
           {conversations.length > 0 ? (
             <>

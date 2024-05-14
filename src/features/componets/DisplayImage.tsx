@@ -21,7 +21,7 @@ const DisplayImage: React.FC<ImageComponentProps> = ({ image }) => {
     return (
         <>
             {imageUrl && (
-                <img src={getImageUrl(imageUrl)} className="h-30" />
+                <img src={getImageUrl(imageUrl)} className="h-50" />
             )}
         </>
     )
