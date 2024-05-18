@@ -17,6 +17,11 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({ display_name, is_verified
     const [userPosts, setUserPosts] = useState(0)
     const BrowsingUser = useAppSelector(selectUserData)
     const [adminOptions, setadminOptions] = useState(false)
+    const [hovered, setHovered] = useState(false)
+
+    const handleHover = () => {
+        setHovered(!hovered)
+    }
 
     const toggleAdminOptions = () => {
         adminOptions ? setadminOptions(false) : setadminOptions(true)
@@ -24,7 +29,7 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({ display_name, is_verified
 
     const verifiedRequest = () => {
         setVerifiedRequestFlag && setVerifiedRequestFlag(true)
-        dispatch(verifiedAsync({profile_id, is_verified}))
+        dispatch(verifiedAsync({ profile_id, is_verified }))
     }
 
     useEffect(() => {
@@ -45,14 +50,14 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({ display_name, is_verified
                             </>
                         )}
                         {BrowsingUser.is_staff && (
-                            <MoreHorizIcon  className='flex flex-row justify-end self-end cursor-pointer' onClick={()=> toggleAdminOptions()} />
+                            <MoreHorizIcon className='flex flex-row justify-end self-end cursor-pointer' onClick={() => toggleAdminOptions()} />
                         )}
                         {adminOptions && (
                             <div className='relative left-5 border-2 w-fit h-9 text-center border-gray-600 font-semibold '>
                                 {is_verified ? (
-                                    <div className='cursor-pointer' onClick={()=> verifiedRequest()}>Remove verified</div>
+                                    <div className='cursor-pointer' onClick={() => verifiedRequest()}>Remove verified</div>
                                 ) : (
-                                    <div className='cursor-pointer' onClick={()=> verifiedRequest()}>Give verified</div>
+                                    <div className='cursor-pointer' onClick={() => verifiedRequest()}>Give verified</div>
                                 )}
                             </div>
                         )}

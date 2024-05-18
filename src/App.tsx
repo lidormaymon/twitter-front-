@@ -17,9 +17,11 @@ import MessageChats from "./features/messages/MessageChats";
 import EditProfile from "./features/profile/EditProfile";
 import { Error404 } from "./features/componets/Error404";
 import Loader from "./features/componets/Loader";
-import { ChangePWD } from "./features/auth/ChangePWD";  
+import { ChangePWD } from "./features/auth/ChangePWD";
 import EmailVerify from "./features/auth/EmailVerify";
 import VerifyAccount from "./features/auth/VerifyAccount";
+import axios from 'axios';
+import { API_SERVER } from "./lib/api";
 
 
 
@@ -34,7 +36,6 @@ function App() {
   const noScrollPage = location.pathname === 'login' || location.pathname === 'register' || location.pathname.startsWith('/messages') ||
     location.pathname.startsWith('/profile/edit')
   const [authenticationComplete, setAuthenticationComplete] = useState(false)
-
 
   useEffect(() => {
     const credsValidChk = () => {
@@ -61,11 +62,13 @@ function App() {
         console.log('user logged status = ', isLogged);
       } catch (error) {
         console.log(error);
-        
+
       } finally {
         setAuthenticationComplete(true);
       }
     };
+
+
 
     credsValidChk();
   }, [isLogged, session, getUserData, isAdmin, token]);

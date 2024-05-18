@@ -12,7 +12,7 @@ export const postFollowAPI = (from_user_id:number, to_user_id:number) => {
 }
 
 export const deleteFollowAPI = (follow_id:number) => {
-    return axios.delete(API_SERVER + `followers/${follow_id}`)
+    return axios.delete(API_SERVER + `followers/${follow_id}/`)
 }
 
 export const isFollowingAPI = (from_user_id:number, to_user_id:number) => {

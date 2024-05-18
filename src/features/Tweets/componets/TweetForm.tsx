@@ -14,6 +14,7 @@ import PostComment from "./PostComment";
 import Button from "../../componets/Button";
 import { ViewLikes } from "./ViewLikes";
 import OpenImage from "../../componets/OpenImage";
+import { abbreviateLikes } from "../../../lib/abbreviateLikes";
 
 
 
@@ -50,6 +51,7 @@ const TweetForm: React.FC<TweetFormProps> = ({ tweet_data, setSumbitEdited, setN
   const [editMode, setEditMode] = useState(false)
   const [editText, seteditText] = useState(tweet_data.text)
   const BrowsingUserID = BrowsingUser.id
+  const likes = abbreviateLikes(tweet_data.likes)
   const modalRef = useRef<HTMLDivElement>(null)
   const parsedDate = parseISO(tweet_data['created_time'])
   const formattedDate =
@@ -263,7 +265,7 @@ const TweetForm: React.FC<TweetFormProps> = ({ tweet_data, setSumbitEdited, setN
               )}
             </div>
             <div className="flex w-40 flex-row gap-x-4 relative left-14 top-5 sm:top-7">
-              <p className="relative bottom-1 p-1" onClick={(event) => toggleLikesView(event)}>{tweet_data.likes}</p>
+              <p className="relative bottom-1 p-1" onClick={(event) => toggleLikesView(event)}>{likes}</p>
               {likedByMe ? (
                 <div>
                   <FavoriteIcon

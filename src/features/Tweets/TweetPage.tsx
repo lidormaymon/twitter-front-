@@ -19,6 +19,7 @@ import Button from "../componets/Button"
 import { ViewLikes } from "./componets/ViewLikes"
 import TweetImage from "../componets/DisplayImage"
 import OpenImage from "../componets/OpenImage"
+import { abbreviateLikes } from "../../lib/abbreviateLikes"
 
 
 
@@ -42,6 +43,7 @@ const TweetPage = () => {
   const [editText, seteditText] = useState(tweetData?.text || '')
   const [sumbitEdited, setSumbitEdited] = useState(false)
   const BrowsingUserID = BrowsingUser.id
+  const likes = abbreviateLikes(tweetData.likes)
   const [isLoading, setIsLoading] = useState(true)
   const parsedDate = parseISO(tweetData?.created_time || '')
   const [newComment, setnewComment] = useState(false)
@@ -229,7 +231,7 @@ const TweetPage = () => {
           </>
         )}
         <div className="flex w-40 flex-row gap-x-4 relative left-14 top-2">
-          <p onClick={() => toggleLikesView()} className="cursor-pointer">{tweetData.likes}</p>
+          <p onClick={() => toggleLikesView()} className="cursor-pointer">{likes}</p>
           {likedByMe ? (
             <div>
               <FavoriteIcon
