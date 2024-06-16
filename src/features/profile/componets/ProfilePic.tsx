@@ -17,7 +17,7 @@ const ProfilePic: React.FC<ImageComponentProps> = ({ image, selectedFile, width,
 
   useEffect(() => {
     if (selectedFile) {
-      // If a new file is selected, display it
+      // If a new file is selected, display itj
       setImageUrl(URL.createObjectURL(selectedFile));
     } else if (image) {
       // If no new file is selected but an image prop is provided, display the image

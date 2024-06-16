@@ -123,6 +123,7 @@ const Profile = () => {
                 display_name={profileCreds?.display_name || ''}
                 is_verified={profileCreds?.is_verified || false}
                 profile_id={profile_id || 0}
+                username={profileCreds.username}
                 setVerifiedRequestFlag={setVerifiedRequestFlag}
             />
             <div>

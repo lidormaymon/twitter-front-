@@ -155,6 +155,11 @@ export const chatsSlice = createSlice({
         builder.addCase(fetchMessagesAsync.fulfilled, (state, action) => {
             state.MessageAR = action.payload
         })
+        builder.addCase(fetchMessagesAsync.rejected, (state, action) => {
+            if (action.payload === undefined) {
+                state.MessageAR = []
+            }
+        })
         builder.addCase(fetchUserConversationsAsync.fulfilled, (state, action) => {
             state.ConversationAR = action.payload['Conversations']
         })

@@ -50,8 +50,8 @@ const OpenImage: React.FC<OpenImageProps> = ({ image, isProfile, width }) => {
             }
             {togglePic && (
                 <div className="fixed inset-0 bg-zinc-700/20  z-50">
-                    <div ref={modalRef} className="absolute left-[650px] top-5">
-                        <CloseIcon onClick={() => openPic()} className="cursor-pointer fixed right-10" />
+                    <div ref={modalRef} className="absolute left-18 top-24  xl:left-[650px] ">
+                        <CloseIcon onClick={() => openPic()} className="cursor-pointer fixed right-16 " />
                         {isProfile ?
                             <ProfilePic className="relative w-[200px] sm:w-[300px] top-24" image={image} /> :
                             <TweetImage className="relative w-[200px] sm:w-[300px] top-24" image={image} />

@@ -47,26 +47,34 @@ export const ChangePWD = () => {
 
 
   const sumbitEditPWD = async () => {
-    seterrorFlag(false)
-    if (formData.conPWD.trim() !== '' &&
-      formData.newPWD.trim() !== '' &&
-      formData.oldPWD.trim() !== '') {
-      if (formData.newPWD.valueOf() === formData.conPWD.valueOf()) {
-        const oldPWD = formData.oldPWD
-        const newPWD = formData.newPWD
-        const user_id = BrowsingUser.id
-        const username = BrowsingUser.username
-        const response = await dispatch(changePwdAsync({ oldPWD, newPWD, user_id, username }))
-        if (response.type === 'change/pwd/fulfilled') {
-          toast.success('Password has been changed successfully!')
-          setTimeout(() => {
-          navigate(`/profile/${BrowsingUser.username}`)
-          }, 1000)
-        } else {
-          toast.error("Wrong old password!"),seterrorFlag(true),seterrorMSG('Wrong old password')
-        }
-      }else seterrorFlag(true), seterrorMSG('New password, and confirm password don\'t match'), toast.error("New password, and confirm password don\'t match")
-    } else seterrorFlag(true), seterrorMSG('Must fill all the fields'), toast.error("Must fill all the fields")
+    setisLoading(true)
+    try {
+      seterrorFlag(false)
+      if (formData.conPWD.trim() !== '' &&
+        formData.newPWD.trim() !== '' &&
+        formData.oldPWD.trim() !== '') {
+        if (formData.newPWD.valueOf() === formData.conPWD.valueOf()) {
+          const oldPWD = formData.oldPWD
+          const newPWD = formData.newPWD
+          const user_id = BrowsingUser.id
+          const username = BrowsingUser.username
+          const response = await dispatch(changePwdAsync({ oldPWD, newPWD, user_id, username }))
+          if (response.type === 'change/pwd/fulfilled') {
+            toast.success('Password has been changed successfully!')
+            setTimeout(() => {
+            navigate(`/profile/${BrowsingUser.username}`)
+            }, 1000)
+          } else {
+            toast.error("Wrong old password!"),seterrorFlag(true),seterrorMSG('Wrong old password')
+          }
+        }else seterrorFlag(true), seterrorMSG('New password, and confirm password don\'t match'), toast.error("New password, and confirm password don\'t match")
+      } else seterrorFlag(true), seterrorMSG('Must fill all the fields'), toast.error("Must fill all the fields")
+    } catch (error) {
+      console.log(error);
+      toast.error('An error has been occured, please try again.')
+    } finally {
+      setisLoading(false)
+    }
   }
 
   return (

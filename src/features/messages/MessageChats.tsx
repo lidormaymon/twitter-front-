@@ -225,7 +225,7 @@ const MessageChats = () => {
                 <VerifiedIcon className='relative right-2 text-blue-600' />
               )}
             </div>
-            <div className='h-114 sm:h-screen xl:h-107 max-h-fit 3xl:h-125  overflow-y-scroll scroll-smooth scroll-into-view-bot scroll custom-scrollbar' ref={chatContainerRef}>
+            <div className='h-[640px] xl:h-[520px] 3xl:h-[730px]  overflow-y-scroll scroll-smooth scroll-into-view-bot scroll custom-scrollbar' ref={chatContainerRef}>
               {historyMessages.length > 0 && (
                 <>
                   {historyMessages.length > 9 && (
