@@ -25,6 +25,7 @@ export const PostTweet: React.FC<props> = ({underline, setPostTweetFlag }) => {
     const [emojiMode, setEmojiMode] = useState(false)
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const hiddenFileInput = useRef<HTMLInputElement | null>(null)
+    const [isLoadingUsers, setIsLoadingUsers] = useState(false)
     const [selectedFile, setSelectedFile] = useState<File | null>(null)
     const navigate = useNavigate()
     const modalRef = useRef<HTMLDivElement>(null)
@@ -86,6 +87,17 @@ export const PostTweet: React.FC<props> = ({underline, setPostTweetFlag }) => {
         return true
       }
     };
+
+    const handleFetchUsers = async () => {
+      setIsLoadingUsers(true)
+      try {
+        await dispatch(getUsers)
+      } catch (error) {
+        console.log(error);
+      } finally{
+        setIsLoadingUsers(false)
+      }
+    }
   
     useEffect(() => {
       dispatch(getUsers())
