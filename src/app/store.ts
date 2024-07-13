@@ -1,8 +1,10 @@
 import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit"
-import authSlice from "../features/auth/Slicer/authSlice"
-import  tweetSlice  from "../features/Tweets/slicer/tweetSlice"
-import  followersSlice  from "../features/profile/Slicer/FollowersSlice"
-import chatsSlice  from "../features/messages/slicer/chatsSlicer"
+import tweetSlice from "../_root/Tweets/slicer/tweetSlice"
+
+import FollowersSlice from "../_root/profile/Slicer/FollowersSlice"
+import chatsSlicer from "../_root/messages/slicer/chatsSlicer"
+import authSlice from "../_auth/Slicer/authSlice"
+
 
 
 
@@ -10,8 +12,8 @@ export const store = configureStore({
   reducer: {
     auth:authSlice,
     tweet:tweetSlice,
-    followers:followersSlice,
-    chats:chatsSlice
+    followers:FollowersSlice,
+    chats:chatsSlicer
   },
 })
 
